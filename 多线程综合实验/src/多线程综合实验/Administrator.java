@@ -20,7 +20,7 @@ public void changeUserInfo() {
 		change.setName(newName);
 		change.setPassword(newPassword);
 		change.setRole(newRole);
-	
+	    DataProcessing.saveAll();
 	}
 	else System.out.println("修改失败");
 	}
@@ -35,7 +35,10 @@ public void delUser() {
 	System.out.print("请输入需要删除的用户名：");String delName=del.next();System.out.println();
 	try {
 	if(DataProcessing.delete(delName))
+	{
 	System.out.println("已为您删除该用户");
+	DataProcessing.saveAll();
+	}
 	else System.out.println("未找到该用户");
 	}
 	catch(SQLException e) {
@@ -52,7 +55,7 @@ public void addUser() {
 	System.out.print("请输入需要添加的用户身份：");String newRole=add.next();System.out.println();
 	try {
 	if(DataProcessing.insert(newName, newCode, newRole))
-		System.out.println("添加用户成功");
+		{System.out.println("添加用户成功"); DataProcessing.saveAll();}
 	else  System.out.println("，用户名重复，添加失败");
 	}
 	catch(SQLException e) {
@@ -105,8 +108,10 @@ public void showMenu() {
 	    default : System.out.println("输入数字不合法，请重新选择功能");
 	  }
 	    if(flag==8) 
-	    { exitSystem();break; }
-	    	  }
+	    { 
+	    	DataProcessing.saveAll();
+	    	exitSystem();break; }
+	    }
 	    	  catch(IOException e) {
 	    			System.out.println("访问文件时出错"+e.getMessage());
 	    		}

@@ -40,7 +40,8 @@ public class Browser extends User {
 		flag=scan.nextInt();
 		System.out.println();
 	  }//while½áÊø
-		if(flag==4) exitSystem();
+		if(flag==4) 
+		exitSystem();
 		scan.close();
 	
 	}

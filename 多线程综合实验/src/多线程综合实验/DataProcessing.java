@@ -1,18 +1,56 @@
 package 多线程综合实验;
 import java.util.*;
+import java.io.*;
 import java.sql.*;
 
 public  class DataProcessing {
 	private static boolean connectToDB=false;
-	
+	final static String userPath="D:\\OOPGit\\多线程综合实验\\useranddoc\\user.bin";
+	final static String docPath="D:\\OOPGit\\多线程综合实验\\useranddoc\\Doc.bin";
 	static Hashtable<String, User> users;
+	static Hashtable<String, Doc> docs;//文件id与文件对象的映射
 
 	static {
 		users = new Hashtable<String, User>();
-		users.put("jack", new Operator("jack","123","operator"));
-		users.put("rose", new Browser("rose","123","browser"));
-		users.put("kate", new Administrator("kate","123","administrator"));
+		docs = new Hashtable<String,Doc>();
+		try {
+			File fp1=new File(userPath);
+			ObjectInputStream in=new ObjectInputStream(new FileInputStream(fp1));
+			 @SuppressWarnings("unchecked")
+			Hashtable<String, User> user2=(Hashtable<String, User>)in.readObject();
+			 users=user2;
+			in.close();
+			}catch(EOFException e){
+				users.put("jack", new Operator("jack","123","operator"));
+				users.put("rose", new Browser("rose","123","browser"));
+				users.put("kate", new Administrator("kate","123","administrator"));}
+			catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		Init();
+		try {
+			File fp1=new File(docPath);
+			ObjectInputStream in=new ObjectInputStream(new FileInputStream(fp1));
+			 @SuppressWarnings("unchecked")
+			Hashtable<String, Doc> doc2=(Hashtable<String, Doc>)in.readObject();
+			 docs=doc2;
+			in.close();
+			}catch(EOFException e){}
+			catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+//		Timestamp timestamp = new Timestamp(System.currentTimeMillis()); 
+//		docs.put("0001",new Doc("0001","jack",timestamp,"Doc Source Java","Doc.java"));
+		
+		
 	}
 	
 	public static  void Init(){
@@ -25,7 +63,30 @@ public  class DataProcessing {
 			connectToDB = false;
 		
 	}	
+	public static Doc searchDoc(String ID) throws SQLException {//根据id查找文件
+		if (docs.containsKey(ID)) {
+			Doc temp =docs.get(ID);
+			return temp;
+		}
+		return null;
+	}
 	
+	public static Enumeration<Doc> getAllDocs() throws SQLException{		
+		Enumeration<Doc> e  = docs.elements();
+		return e;
+	} 
+	
+	public static boolean insertDoc(String ID, String creator, Timestamp timestamp, String description, String filename) throws SQLException{
+		Doc doc;		
+	
+		if (docs.containsKey(ID))
+			return false;
+		else{
+			doc = new Doc(ID,creator,timestamp,description,filename);
+			docs.put(ID, doc);
+			return true;
+		}
+	} 
 	public static User searchUser(String name) throws SQLException{
 		if ( !connectToDB ) 
 			throw new SQLException( "Not Connected to Database" );
@@ -143,8 +204,27 @@ public  class DataProcessing {
 			}                             
 		} 
    }           
+  public static void saveAll() {
+	  try {
+		  File fp1=new File(userPath);
+			ObjectOutputStream out=new ObjectOutputStream(new FileOutputStream(fp1));
+				out.writeObject(users);
+			out.close();
+	  }
+	  catch (IOException e) {
+		  System.out.println(e.getMessage());
+	  }
+	  try {
+			File fp1=new File(docPath);
+			ObjectOutputStream out=new ObjectOutputStream(new FileOutputStream(fp1));
+				out.writeObject(docs);
+			out.close();
+			System.out.println("已保存相应操作");
+	  
+		}
+	  catch(Exception e) {}
+  }
 
-	
 	public static void main(String[] args) {		
 
 	}

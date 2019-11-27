@@ -27,7 +27,10 @@ public static void main(String[] args) {
 		System.out.println();
 		try {
 		User one = DataProcessing.search(Name, Code);
+		if(one==null) { System.out.println("ÕËºÅÃÜÂëÊäÈë´íÎó");}
+		else {
 		one.showMenu();
+		}
 		}
 		catch(SQLException e) { 
 			System.out.println("Êı¾İ¿â´íÎó"+e.getMessage());
