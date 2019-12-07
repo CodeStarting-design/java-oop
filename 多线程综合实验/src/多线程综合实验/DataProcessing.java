@@ -88,11 +88,11 @@ public  class DataProcessing {
 		}
 	} 
 	public static User searchUser(String name) throws SQLException{
-		if ( !connectToDB ) 
-			throw new SQLException( "Not Connected to Database" );
-		double ranValue=Math.random();
-		if (ranValue>0.5)
-			throw new SQLException( "Error in excecuting Query" );
+//		if ( !connectToDB ) 
+//			throw new SQLException( "Not Connected to Database" );
+//		double ranValue=Math.random();
+//		if (ranValue>0.5)
+//			throw new SQLException( "Error in excecuting Query" );
 		
 		if (users.containsKey(name)) {
 			return users.get(name);			
@@ -101,12 +101,12 @@ public  class DataProcessing {
 	}
 	
 	public static User search(String name, String password) throws SQLException {
-		if ( !connectToDB ) 
-	        throw new SQLException( "Not Connected to Database" );
-		double ranValue=Math.random();
-		if (ranValue>0.5)
-			throw new SQLException( "Error in excecuting Query" );
-		
+//		if ( !connectToDB ) 
+//	        throw new SQLException( "Not Connected to Database" );
+//		double ranValue=Math.random();
+//		if (ranValue>0.5)
+//			throw new SQLException( "Error in excecuting Query" );
+//		
 		if (users.containsKey(name)) {
 			User temp =users.get(name);
 			if ((temp.getPassword()).equals(password))
@@ -116,12 +116,12 @@ public  class DataProcessing {
 	}
 	
 	public static Enumeration<User> getAllUser() throws SQLException{
-		if ( !connectToDB ) 
-	        throw new SQLException( "Not Connected to Database" );
-		
-		double ranValue=Math.random();
-		if (ranValue>0.5)
-			throw new SQLException( "Error in excecuting Query" );
+//		if ( !connectToDB ) 
+//	        throw new SQLException( "Not Connected to Database" );
+//		
+//		double ranValue=Math.random();
+//		if (ranValue>0.5)
+//			throw new SQLException( "Error in excecuting Query" );
 		
 		Enumeration<User> e  = users.elements();
 		return e;
@@ -131,13 +131,13 @@ public  class DataProcessing {
 	
 	public static boolean update(String name, String password, String role) throws SQLException{
 		User user;
-		if ( !connectToDB ) 
-	        throw new SQLException( "Not Connected to Database" );
-		
-		double ranValue=Math.random();
-		if (ranValue>0.5)
-			throw new SQLException( "Error in excecuting Update" );
-		
+//		if ( !connectToDB ) 
+//	        throw new SQLException( "Not Connected to Database" );
+//		
+//		double ranValue=Math.random();
+//		if (ranValue>0.5)
+//			throw new SQLException( "Error in excecuting Update" );
+//		
 		if (users.containsKey(name)) {
 			if (role.equalsIgnoreCase("administrator"))
 				user = new Administrator(name,password, role);
@@ -154,13 +154,13 @@ public  class DataProcessing {
 	public static boolean insert(String name, String password, String role) throws SQLException{
 		User user;
 		
-		if ( !connectToDB ) 
-	        throw new SQLException( "Not Connected to Database" );
-		
-		double ranValue=Math.random();
-		if (ranValue>0.5)
-			throw new SQLException( "Error in excecuting Insert" );
-		
+//		if ( !connectToDB ) 
+//	        throw new SQLException( "Not Connected to Database" );
+//		
+//		double ranValue=Math.random();
+//		if (ranValue>0.5)
+//			throw new SQLException( "Error in excecuting Insert" );
+//		
 		if (users.containsKey(name))
 			return false;
 		else{
@@ -176,13 +176,13 @@ public  class DataProcessing {
 	}
 	
 	public static boolean delete(String name) throws SQLException{
-		if ( !connectToDB ) 
-	        throw new SQLException( "Not Connected to Database" );
-		
-		double ranValue=Math.random();
-		if (ranValue>0.5)
-			throw new SQLException( "Error in excecuting Delete" );
-		
+//		if ( !connectToDB ) 
+//	        throw new SQLException( "Not Connected to Database" );
+//		
+//		double ranValue=Math.random();
+//		if (ranValue>0.5)
+//			throw new SQLException( "Error in excecuting Delete" );
+//		
 		if (users.containsKey(name)){
 			users.remove(name);
 			return true;
@@ -192,17 +192,17 @@ public  class DataProcessing {
 	}	
             
 	public void disconnectFromDB() {
-		if ( connectToDB ){
-			// close Statement and Connection            
-			try{
-			    if (Math.random()>0.5)
-					throw new SQLException( "Error in disconnecting DB" );
-			}catch ( SQLException sqlException ){                                            
-			    sqlException.printStackTrace();           
-			}finally{                                            
-				connectToDB = false;              
-			}                             
-		} 
+//		if ( connectToDB ){
+//			// close Statement and Connection            
+//			try{
+//			    if (Math.random()>0.5)
+//					throw new SQLException( "Error in disconnecting DB" );
+//			}catch ( SQLException sqlException ){                                            
+//			    sqlException.printStackTrace();           
+//			}finally{                                            
+//				connectToDB = false;              
+//			}                             
+//		} 
    }           
   public static void saveAll() {
 	  try {
@@ -224,7 +224,27 @@ public  class DataProcessing {
 		}
 	  catch(Exception e) {}
   }
-
+   
+	public static List<User> getListUser() throws SQLException{
+    	
+    	  List<User> userList = new ArrayList();
+    	  Enumeration<User> enumeration=DataProcessing.getAllUser();
+    	  while(enumeration.hasMoreElements()) {
+    		User user= enumeration.nextElement();
+    		userList.add(user);
+    	   }
+    	 return userList;
+    	 
+    }
+	public static List<Doc> getListDoc() throws SQLException{
+		List<Doc> docList =new ArrayList();
+		Enumeration<Doc> enumeration=DataProcessing.getAllDocs();
+		 while(enumeration.hasMoreElements()) {
+			 Doc docL =enumeration.nextElement();
+			 docList.add(docL);
+		 }
+		return docList;
+	} 
 	public static void main(String[] args) {		
 
 	}
