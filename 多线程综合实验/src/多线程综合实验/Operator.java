@@ -5,10 +5,16 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Scanner;
 
+import exceptionBao.BaseException;
+import sqlService.SQLForDoc;
+
 public class Operator extends User{
        final static String uploadFile="D:\\OOPGit\\多线程综合实验\\uploadfile";
 	Operator(String name, String password, String role) {
 		super(name, password, role);
+		
+	}
+public	Operator(){
 		
 	}
 	public String getFileName(String filename) {   
@@ -24,7 +30,7 @@ public class Operator extends User{
         return filename;   
     }
 
-    public static void uploadFile(String fileID,String fileDes ,String fileName,User cUser) throws SQLException, IOException { //使用文件读写则必须使用异常处理
+    public static void uploadFile(String fileID,String fileDes ,String fileName,User cUser) throws SQLException, IOException, BaseException { //使用文件读写则必须使用异常处理
 //    	System.out.print("请输入源文件名：");
 //    	Scanner inupt=new Scanner(System.in);
 //    	String fileName=inupt.next();System.out.println();
@@ -40,12 +46,15 @@ public class Operator extends User{
 		while((i=fileIn.read())!=-1) {
 			fileOut.write((byte)i);
 		}
-    	if(DataProcessing.insertDoc(fileID, cUser.getName(), timestamp, fileDes, uploadFile+"\\"+Doc.getFileName(fileName))) {	
+		Doc newDoc =new Doc(fileID, cUser.getName(), timestamp, fileDes, uploadFile+"\\"+Doc.getFileName(fileName));
+		SQLForDoc sqlDoc =new SQLForDoc();
+		sqlDoc.insert(newDoc);
+//    	if(DataProcessing.insertDoc(fileID, cUser.getName(), timestamp, fileDes, uploadFile+"\\"+Doc.getFileName(fileName))) {	
 //    	System.out.println("上传文件...  ...");
 //    	System.out.println("上传成功");
-    	DataProcessing.saveAll();
-    	}
-    	else System.out.println("文件ID重复，上传失败");
+//    	DataProcessing.saveAll();
+//    	}
+ //   	else System.out.println("文件ID重复，上传失败");
     }
 	@Override
 	public void showMenu() {

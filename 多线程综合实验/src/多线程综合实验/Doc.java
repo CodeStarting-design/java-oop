@@ -3,7 +3,7 @@ package 多线程综合实验;
 import java.io.*;
 import java.sql.Timestamp;
 
-class Doc implements Serializable{
+ public class Doc implements Serializable{
 	private String ID;//文件的标识
 	private String creator;//创建者
 	private Timestamp timestamp;//时间记录
@@ -17,6 +17,9 @@ class Doc implements Serializable{
 		this.timestamp = timestamp;
 		this.description = description;
 		this.filename=filename;
+	}
+	public Doc() {
+		
 	}
 
 	public String getID() {

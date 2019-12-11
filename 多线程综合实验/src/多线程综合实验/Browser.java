@@ -8,7 +8,9 @@ public class Browser extends User {
 		super(name, password, role);
 		
 	}
-
+  public Browser(){
+	   
+   }
 	@Override
 	public void showMenu() {
 		BrowserGui broGui =new BrowserGui();

@@ -12,6 +12,8 @@ import java.sql.SQLException;
 
 import javax.swing.*;
 
+import sqlService.SQLForUser;
+
 
 public class LoginFrame extends JFrame {
 	private JLabel jLabel1;
@@ -107,7 +109,8 @@ public class LoginFrame extends JFrame {
 //		}
 		
 			try {
-				User one=DataProcessing.search(name, password);
+				SQLForUser sql=new SQLForUser();
+				User one=sql.login(name, password);
 				if(one==null) {
 				hideFrame();
 				fail failIn =new fail();

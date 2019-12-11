@@ -6,6 +6,11 @@ import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.Scanner;
 
+import exceptionBao.BaseException;
+import exceptionBao.DaoException;
+import sqlService.SQLForDoc;
+import sqlService.SQLForUser;
+
 public abstract class User implements Serializable {
 	private String name;//用户名
 	private String password;//密码
@@ -15,31 +20,44 @@ public abstract class User implements Serializable {
 		this.password=password;
 		this.role=role;				
 	}
+	User(){
+		name="";
+		password="";
+		role="";
+	}
 	
-	public boolean changeSelfInfo(User currentUser , String newCode) throws SQLException{
+	public boolean changeSelfInfo(User currentUser , String newCode) throws SQLException, DaoException{
 		//写用户信息到存储
 		
-		if (DataProcessing.update(currentUser.getName(), newCode, currentUser.getRole())){
-			currentUser.setPassword(newCode);
-			System.out.println("修改成功");
-			DataProcessing.saveAll();
-			return true;
-		}else
-			return false;	
+//		if (DataProcessing.update(currentUser.getName(), newCode, currentUser.getRole())){
+//			currentUser.setPassword(newCode);
+//			System.out.println("修改成功");
+//			DataProcessing.saveAll();
+//			return true;
+//		}else
+//			return false;	
+		SQLForUser sqlUser=new SQLForUser();
+		currentUser.setPassword(newCode);
+		if(sqlUser.update(currentUser)!=null) {
+		return true;
+		}
+		else return false;
 	}
 	
 	public abstract void showMenu();
 	
-	public boolean downloadFile(String fileID,String path) throws IOException, SQLException  {
+	public boolean downloadFile(String fileID,String path) throws IOException, SQLException, BaseException  {
 //		Scanner scan=new Scanner(System.in);
 //		System.out.print("请输入需要下载的文件id：");
 //		String fileID=scan.next();
-		 Doc downFile=DataProcessing.searchDoc(fileID);
+//		 Doc downFile=DataProcessing.searchDoc(fileID);
 //		 if(downFile==null) { System.out.println("系统中未包含该文件"); return false;}
 //		double ranValue=Math.random();
 //		if (ranValue>0.5)
 //			throw new IOException( "Error in accessing file" );
 		//System.out.println("下载文件... ...");
+		SQLForDoc sql =new SQLForDoc();
+		Doc downFile = sql.findById(fileID);
 		 File f2=new File(downFile.getFilename());
 		FileInputStream fileIn=new FileInputStream(f2);//此时的getFilename获取的是带文件储存位置的文件名
 		File f=new File(path);//存入指定位置,并创建同名文件

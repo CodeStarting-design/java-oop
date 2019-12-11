@@ -10,48 +10,48 @@ public  class DataProcessing {
 	static Hashtable<String, User> users;
 	static Hashtable<String, Doc> docs;//文件id与文件对象的映射
 
-	static {
-		users = new Hashtable<String, User>();
-		docs = new Hashtable<String,Doc>();
-		try {
-			File fp1=new File(userPath);
-			ObjectInputStream in=new ObjectInputStream(new FileInputStream(fp1));
-			 @SuppressWarnings("unchecked")
-			Hashtable<String, User> user2=(Hashtable<String, User>)in.readObject();
-			 users=user2;
-			in.close();
-			}catch(EOFException e){
-				users.put("jack", new Operator("jack","123","operator"));
-				users.put("rose", new Browser("rose","123","browser"));
-				users.put("kate", new Administrator("kate","123","administrator"));}
-			catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		Init();
-		try {
-			File fp1=new File(docPath);
-			ObjectInputStream in=new ObjectInputStream(new FileInputStream(fp1));
-			 @SuppressWarnings("unchecked")
-			Hashtable<String, Doc> doc2=(Hashtable<String, Doc>)in.readObject();
-			 docs=doc2;
-			in.close();
-			}catch(EOFException e){}
-			catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-//		Timestamp timestamp = new Timestamp(System.currentTimeMillis()); 
-//		docs.put("0001",new Doc("0001","jack",timestamp,"Doc Source Java","Doc.java"));
-		
-		
-	}
+//	static {
+//		users = new Hashtable<String, User>();
+//		docs = new Hashtable<String,Doc>();
+//		try {
+//			File fp1=new File(userPath);
+//			ObjectInputStream in=new ObjectInputStream(new FileInputStream(fp1));
+//			 @SuppressWarnings("unchecked")
+//			Hashtable<String, User> user2=(Hashtable<String, User>)in.readObject();
+//			 users=user2;
+//			in.close();
+//			}catch(EOFException e){
+//				users.put("jack", new Operator("jack","123","operator"));
+//				users.put("rose", new Browser("rose","123","browser"));
+//				users.put("kate", new Administrator("kate","123","administrator"));}
+//			catch (ClassNotFoundException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		Init();
+//		try {
+//			File fp1=new File(docPath);
+//			ObjectInputStream in=new ObjectInputStream(new FileInputStream(fp1));
+//			 @SuppressWarnings("unchecked")
+//			Hashtable<String, Doc> doc2=(Hashtable<String, Doc>)in.readObject();
+//			 docs=doc2;
+//			in.close();
+//			}catch(EOFException e){}
+//			catch (ClassNotFoundException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+////		Timestamp timestamp = new Timestamp(System.currentTimeMillis()); 
+////		docs.put("0001",new Doc("0001","jack",timestamp,"Doc Source Java","Doc.java"));
+//		
+//		
+//	}
 	
 	public static  void Init(){
 		// connect to database

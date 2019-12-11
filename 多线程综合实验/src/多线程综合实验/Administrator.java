@@ -8,6 +8,9 @@ public class Administrator extends User {
 public Administrator(String Name,String Password,String Role) {
 	super(Name,Password,Role);
 }
+public Administrator(){
+
+}
 public void changeUserInfo() {
 	Scanner info = new Scanner(System.in);
 	System.out.print("请输入用户名：");String newName=info.next();System.out.println();
@@ -70,6 +73,16 @@ public static void  addUser(String newName,String newCode ,String newRole) {
 		else {System.out.println("数据更新错误"+e.getMessage()); }
 	}
 	
+}
+public static User CreateUser(String name,String password ,String role) {
+	User user =null;
+	if (role.equalsIgnoreCase("administrator"))
+		user = new Administrator(name,password, role);
+	else if (role.equalsIgnoreCase("operator"))
+		user = new Operator(name,password, role);
+	else
+		user = new Browser(name,password, role);
+	return user;
 }
 public void listUser() {
 	try {

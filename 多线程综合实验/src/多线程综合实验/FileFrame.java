@@ -24,9 +24,11 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 
+import sqlService.SQLForDoc;
+
 
 public class FileFrame extends JFrame{
-	
+	private SQLForDoc sql = new SQLForDoc();
 	private DefaultTableModel tableModel;
 	private JTable table;
 	JPanel panel_up,panel_down;//两个上传下载的面板
@@ -183,7 +185,8 @@ public class FileFrame extends JFrame{
 		try {
 			String[] colName = {"档案号", "创建者", "时间","文件名","描述"};
 			String[][] tableValue = new String[10][5];
-			List<Doc> documents = DataProcessing.getListDoc();
+			//List<Doc> documents = DataProcessing.getListDoc();
+			List<Doc> documents = sql.findAllOnes();
 			for (int row = 0; row < documents.size(); row++) {
 				Doc doc = documents.get(row);
 				tableValue[row][0]=doc.getID();
@@ -216,6 +219,7 @@ public class FileFrame extends JFrame{
 			JOptionPane.showMessageDialog(this, "上传成功！");	
 		}
 	}catch(Exception ex){
+		ex.printStackTrace();
 		JOptionPane.showMessageDialog(this,"上传文件失败！");
 	}
 }

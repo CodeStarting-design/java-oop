@@ -27,6 +27,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 
+import sqlService.SQLForUser;
+
 
 public class UserFrame extends JFrame {
 	
@@ -228,7 +230,9 @@ public class UserFrame extends JFrame {
 		try {
 			String[] colName = {"用户名", "口令", "角色"};
 			String[][] tableValue = new String[10][3];
-			List<User> users = DataProcessing.getListUser();
+			//List<User> users = DataProcessing.getListUser();
+			SQLForUser sql =new SQLForUser();
+			List<User> users= sql.findAllOnes();
 			for (int row = 0; row < users.size(); row++) {
 				User user = users.get(row);
 				tableValue[row][0]=user.getName();
@@ -247,8 +251,10 @@ public class UserFrame extends JFrame {
 	public void addUserToComboBox() {//将所有的信息加入表格
 		try {
 			namecomboBox.removeAllItems();
-
-			List<User> users = DataProcessing.getListUser();
+         
+			//List<User> users = DataProcessing.getListUser();
+			SQLForUser sql=new SQLForUser();
+			List<User> users= sql.findAllOnes();			
 			for (User user : users) {
 				namecomboBox.addItem(user.getName());
 			}
@@ -282,7 +288,9 @@ public class UserFrame extends JFrame {
 //				user.setName(name);
 //				user.setPassword(password);
 				
-				Administrator.addUser(name,password,role);
+				User user=Administrator.CreateUser(name, password, role);
+				SQLForUser sqlUser=new SQLForUser();
+				sqlUser.insert(user);
 				JOptionPane.showMessageDialog(this,"新增用户成功！");
 				
 				nametextField.setText("");
@@ -304,7 +312,8 @@ public class UserFrame extends JFrame {
 		User user;
 		if (evt.getStateChange() == ItemEvent.SELECTED) {
 			try{
-				user = DataProcessing.searchUser((String)evt.getItem());
+				SQLForUser sql =new SQLForUser();
+				user = sql.findByName((String)evt.getItem());
 				passwordField_mod.setText(user.getPassword());
 				rolecomboBox.setSelectedItem(user.getClass().getSimpleName());
 			}catch(Exception ex){
@@ -323,8 +332,10 @@ public class UserFrame extends JFrame {
 				String role=(String)rolecomboBox.getSelectedItem();
 				
 			
-				DataProcessing.update(name, password, role);
-				
+				//DataProcessing.update(name, password, role);
+				 SQLForUser sql=new SQLForUser();
+	            User user =Administrator.CreateUser(name, password, role);
+	           if( sql.update(user)!=null)
 				JOptionPane.showMessageDialog(this,"用户信息修改成功！");
 			}
 		}catch(Exception ex){
@@ -356,8 +367,9 @@ public class UserFrame extends JFrame {
 				if (object != null) {
 					username = object.toString();
 				}
-
-				if (Administrator.delUser(username)!=false){					
+                SQLForUser sql=new SQLForUser();
+                User user = sql.findByName(username);
+				if (sql.delete(user)!=null){					
 					JOptionPane.showMessageDialog(this, "删除成功！");
 					showUserInfoToTable();
 				}
